@@ -1,3 +1,7 @@
+// What is a Two-Pointer technique 
+// --> It is used for searching pairs in a sorted array.
+
+
 let arr = [1, 3, 4, 8, 9]
 let target = 11
 
