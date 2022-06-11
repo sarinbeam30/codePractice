@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html,
+      body {
+        font-family: monospace;
+        height: 100%;
+        line-height: 1.5;
+        margin: 0;
+      }
+      section {
+        height: 200px;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <section style="background-color:#d0d0d0;overflow:scroll;">
+      <h3>Instructions</h3>
+      <p>You can only modify code in MyDlg class</p>
+      <h3>Objectives</h3>
+      <p>Developers want to be able to prevent the dialog from closing (when click X) by cancelling the event with `preventDefault()`. Currently, MyDlg doesn't support this use case, you're asked to fix it.</p>
+    </section>
+    <my-dlg id="dlg"></my-dlg>
+  </body>
+  <script defer>
+    /*
+     * Do not modify this class.
+     * Custom Dialog Element.
+     */
+    class MyDlg extends HTMLElement {
+      constructor() {
+        super();
+      }
+      connectedCallback() {
+        const div = document.createElement("div");
+        div.id = "container";
+        div.style.position = "relative";
+        div.style.width = div.style.height = "100px";
+        div.style.border = "1px solid black";
+        const closeBtn = document.createElement("button");
+        closeBtn.textContent = "X";
+        closeBtn.style.position = "absolute";
+        closeBtn.style.right = "0";
+        closeBtn.addEventListener("click", () => {
+          this.dispatchEvent(new CustomEvent("close-dlg"));
+          div.style.display = "none";
+        });
+        div.appendChild(closeBtn);
+        this.appendChild(div);
+      }
+    }
+    // Define the new element
+    customElements.define("my-dlg", MyDlg);
+
+    const dlg = document.getElementById("dlg");
+    // dlg.addEventListener('close-dlg', (event) => event.preventDefault() );
+    dlg.addEventListener("close-dlg", (event) => {
+      event.stopPropagation();
+    });
+    /****/
+  </script>
+</html>
