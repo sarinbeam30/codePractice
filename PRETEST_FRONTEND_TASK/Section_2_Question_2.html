@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Section 2 (Question_2)</title>
+  </head>
+  <script src="https://unpkg.com/vue@3"></script>
+
+  <div id="app">
+    <div class="title">List of all category</div>
+    <div class="search-bar">
+      <span>Search : </span>
+      <input
+        type="text"
+        v-model="searchData"
+        @keyup.delete="setCategoriesData(searchData)"
+      />
+    </div>
+    <ul class="list-result">
+      <li v-for="category in categoriesData">{{ category }}</li>
+    </ul>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          categoriesData: null,
+          originalArray: null,
+          searchData: null,
+        };
+      },
+      watch: {
+        searchData(value) {
+          this.filterItems(this.categoriesData, value);
+        },
+      },
+      async mounted() {
+        await this.getDataFromApi();
+      },
+      methods: {
+        async getDataFromApi() {
+          try {
+            let fetchData = await fetch(
+              "https://api.publicapis.org/categories",
+              {
+                method: "GET",
+              }
+            );
+            let jsonData = await fetchData.json();
+            this.categoriesData = jsonData.categories;
+            this.originalArray = jsonData.categories;
+          } catch (error) {
+            console.log(error);
+          }
+        },
+        filterItems(array, query) {
+          this.categoriesData = this.categoriesData.filter((element) =>
+            element.includes(query)
+          );
+          if (this.categoriesData.length === 0) {
+            this.categoriesData = ["Not Found"];
+          }
+        },
+        setCategoriesData(query) {
+          this.categoriesData = this.originalArray;
+          this.filterItems(this.categoriesData, query);
+        },
+      },
+    }).mount("#app");
+  </script>
+  <style>
+    .title {
+      font-style: italic;
+      font-weight: bolder;
+    }
+    .search-bar {
+      margin: 20px 0;
+    }
+  </style>
+</html>
