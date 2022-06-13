@@ -18,6 +18,8 @@ let searchIndex = (string, searchTerm) => {
 let getNavData = async () => {
   try {
     let navObject = {}
+    let provideArgv = ''
+    let navValue = ''
     let fetchData = await fetch("https://codequiz.azurewebsites.net/", {
       method: "GET",
       headers: {
@@ -47,7 +49,24 @@ let getNavData = async () => {
           }
         }
       }
-      console.log(navObject)
+
+      process.argv.forEach(function (val, index) {
+        if (index === 2) {
+          provideArgv = val
+        }
+      });
+
+      Object.entries(navObject).forEach(([key, value]) => {
+        if (key.toString() === provideArgv.toString()) {
+          navValue = value
+        } 
+      })
+
+      if (navValue === '') {
+        navValue = 'Nav value is not found'
+      }
+
+      console.log(navValue)
     } else {
       console.log("Not Support DomParser");
     }
