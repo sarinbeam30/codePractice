@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://unpkg.com/rxjs@7.8.1/dist/bundles/rxjs.umd.min.js"></script>
+  <title>RxJS Playground</title>
+</head>
+<body>
+  <h1>RxJS Test</h1>
+  <h1>Assignment 4</h1>
+  <button id="click-me-1">Click Me 1</button>
+  <button id="click-me-2">Click Me 2</button>
+
+  <script>
+    const { fromEvent, combineLatest } = rxjs;
+    const { throttleTime, scan } = rxjs.operators;
+
+    const clickMe1 = document.getElementById('click-me-1');
+    const clickMe2 = document.getElementById('click-me-2');
+
+    const clickMe1$ = fromEvent(clickMe1, 'click')
+      .pipe(
+        throttleTime(1000), // Only allow one click every second
+        scan((count) => count + 1, 0) // Count the number of clicks
+      );
+
+    const clickMe2$ = fromEvent(clickMe2, 'click')
+      .pipe(
+        throttleTime(1000), // Only allow one click every second
+        scan((count) => count + 1, 0) // Count the number of clicks
+      );
+
+    // combineLatest to combine the latest values from both streams
+    combineLatest([clickMe1$, clickMe2$]).subscribe(([click1, click2]) => {
+      console.log('Button 1 clicked:', click1);
+      console.log('Button 2 clicked:', click2);
+    });
+
+  </script>
+</body>
+</html>

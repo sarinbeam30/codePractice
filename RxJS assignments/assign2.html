@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://unpkg.com/rxjs@7.8.1/dist/bundles/rxjs.umd.min.js"></script>
+  <title>RxJS Playground</title>
+</head>
+<body>
+  <h1>RxJS Test</h1>
+  <button id="click-me">Click me!</button>
+  <p>Click the button to see the throttle effect.</p>
+  <p>Check the console for the output.</p>
+
+  <script>
+    const { fromEvent } = rxjs;
+    const { throttleTime, scan } = rxjs.operators;
+
+    const button = document.getElementById('click-me');
+
+    fromEvent(button, 'click').pipe(
+      throttleTime(1000), // Only allow one click every second
+      scan((count) => count + 1, 0) // Count the number of clicks
+    ).subscribe(count => {
+      console.log('Button clicked', count, 'times');
+    });
+
+  </script>
+</body>
+</html>

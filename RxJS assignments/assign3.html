@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://unpkg.com/rxjs@7.8.1/dist/bundles/rxjs.umd.min.js"></script>
+  <title>RxJS Playground</title>
+</head>
+<body>
+  <h1>RxJS Test</h1>
+  <input type="text" id="search-box" placeholder="Type to search..." />
+  <p>Type something in the input box to see the debounce effect.</p>
+  <p>Check the console for the output.</p>
+
+  <script>
+    const { fromEvent } = rxjs;
+    const { debounceTime, map, distinctUntilChanged, switchMap } = rxjs.operators;
+    const { ajax } = rxjs.ajax;
+
+    const input = document.getElementById('search-box');
+
+    fromEvent(input, 'input').pipe(
+      map(event => (event.target).value),
+      debounceTime(500), // Wait for 500ms pause in events
+      distinctUntilChanged(), // Only emit when the current value is different than the last
+      // Use switchMap to cancel previous requests if a new value is emitted
+      switchMap(query => ajax.getJSON(`https://api.example.com/search?q=${query}`)) // Replace with your API endpoint
+    ).subscribe(response => {
+      console.log('API result:', response);
+    });
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://unpkg.com/rxjs@7.8.1/dist/bundles/rxjs.umd.min.js"></script>
+  <title>RxJS Playground</title>
+</head>
+<body>
+  <h1>RxJS Test</h1>
+  <h1>Assignment 6 (📊 Progress Bar with Interval)</h1>
+  <p>Check the console for the output.</p>
+  <p>This example demonstrates how to create a progress bar that updates every second using RxJS.</p>
+  <p>It will simulate a progress bar that fills up to 100% over 10 seconds.</p>
+  <div id="progress-bar" style="width: 100%; background-color: #f3f3f3; border: 1px solid #ccc;">
+    <div id="progress" style="width: 0%; height: 30px; background-color: #4caf50;"></div>
+  </div>
+  <p id="progress-text">0%</p>
+
+  <script>
+    const { interval } = rxjs;
+    const { take, map } = rxjs.operators;
+
+    const progressBar = document.getElementById('progress');
+    const progressText = document.getElementById('progress-text');
+
+    // Create an observable that emits every seconds
+    const progress$ = interval(1000).pipe(
+      take(11), // Emit 11 times (0 to 10)
+      map(value => value * 10) // Convert to percentage
+    );
+
+    // Subscribe to the observable
+    progress$.subscribe(progress => {
+      progressBar.style.width = `${progress}%`;
+      progressText.textContent = `${progress}%`;
+
+      if (progress === 100) {
+        console.log('✅ Progress completed!');
+      } else {
+        console.log(`Progress: ${progress}%`);
+      }
+    })
+  </script>
+  
+
+</body>
+</html>
