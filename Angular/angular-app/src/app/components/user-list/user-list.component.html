@@ -1,0 +1,6 @@
+<input [(ngModel)]="search" placeholder="Search users" />
+<ul>
+  <li *ngFor="let user of filteredUsers()">
+    <button (click)="selectUser(user)">{{ user.name }}</button>
+  </li>
+</ul>
