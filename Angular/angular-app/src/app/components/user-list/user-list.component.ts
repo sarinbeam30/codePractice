@@ -20,7 +20,7 @@ export class UserListComponent {
     return this.users.filter(user => user.name.toLowerCase().includes(this.search.toLowerCase()));
   }
 
-  selectUser(user: any) {
+  selectUser(user: User) {
     this.userSelected.emit(user);
   }
 }

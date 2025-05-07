@@ -1,0 +1,14 @@
+<div class="post"> Post Component </div>
+<hr /> <!-- Horizontal line added here -->
+<div *ngIf="loading">Loading...</div>
+<div *ngIf="error">{{ error }}</div>
+<table *ngIf="!loading && !error">
+  <tr>
+    <th>Title</th>
+    <th>Body</th>
+  </tr>
+  <tr *ngFor="let post of posts">
+    <td>{{ post.title }}</td>
+    <td>{{ post.body }}</td>
+  </tr>
+</table>

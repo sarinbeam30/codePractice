@@ -1,0 +1,17 @@
+<hr class="login" /> <!-- Horizontal line added here -->
+<div>Login Component</div>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <input formControlName="email" placeholder="Email" required />
+  <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+    Invalid email
+  </div>
+
+  <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Password" />
+  <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+    Password must be at least 6 characters
+  </div>
+
+  <label><input type="checkbox" [(ngModel)]="showPassword" [ngModelOptions]="{standalone: true}" /> Show Password</label>
+
+  <button type="submit">Login</button>
+</form>
